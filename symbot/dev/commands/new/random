@@ -1,0 +1,32 @@
+import logging
+import random
+
+from symbot.chat.message import Message
+from symbot.control.control import Control
+from symbot.dev.commands._base_command import BaseCommand
+
+
+class Command(BaseCommand):
+
+    def __init__(self, control: Control):
+        super().__init__(control)
+        self.name = '!random'
+        self.author = 'fd_symbicort'
+
+    async def run(self, msg: Message):
+
+        try:
+            recipient = msg.context[0]
+        except IndexError:
+            logging.info(f'{self.name} missing context recipient')
+            return
+        user = msg.user
+
+        test_list = [f'beware @{user} makes an accurate throw of a snowball at {recipient}', f'beware @{user} makes a huge snowball for {recipient}']
+        random_num = random.choice(test_list)
+        response = random.choice(test_list)
+        
+        await self.control.respond(response)
+        
+        
+        
